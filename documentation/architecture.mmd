@@ -1,0 +1,20 @@
+flowchart TD
+  subgraph Frontend
+    A1[HomeScreen]
+    A2[QuizScreen]
+    A3[ResultScreen]
+  end
+  subgraph Backend
+    B1[Flask API]
+    B2[Ollama/Mistral]
+    B3[Analytics Store]
+  end
+  A1 -- Start Quiz --> A2
+  A2 -- API Request --> B1
+  B1 -- Generate Question --> B2
+  B2 -- Question JSON --> B1
+  B1 -- Question JSON --> A2
+  A2 -- Submit Answer --> B1
+  B1 -- Feedback JSON --> A2
+  A2 -- Complete Quiz --> A3
+  A2 -- Usage Data --> B3 

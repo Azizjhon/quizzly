@@ -1,0 +1,71 @@
+%% Level 0 DFD (Context Diagram)
+graph TD
+    User((User))
+    QuizSystem[Quizlly System]
+    User -->|Input: Topic, Difficulty| QuizSystem
+    QuizSystem -->|Output: Questions, Feedback, Results| User
+
+%% Level 1 DFD (Main Processes)
+graph TD
+    User((User))
+    QuizUI[Quiz Interface]
+    QuestionGen[Question Generator]
+    Analytics[Analytics System]
+    AIModel[Ollama/Mistral AI]
+    LocalStore[(Local Storage)]
+
+    User -->|Select Topic/Difficulty| QuizUI
+    QuizUI -->|Request Question| QuestionGen
+    QuestionGen -->|Generate Prompt| AIModel
+    AIModel -->|Return Question| QuestionGen
+    QuestionGen -->|Deliver Question| QuizUI
+    User -->|Submit Answer| QuizUI
+    QuizUI -->|Store Result| Analytics
+    Analytics -->|Save Data| LocalStore
+    QuizUI -->|Show Results| User
+
+%% Level 2 DFD (Detailed Processes)
+graph TD
+    subgraph Frontend
+        TopicSelect[Topic Selection]
+        DiffSelect[Difficulty Selection]
+        QuestionDisplay[Question Display]
+        AnswerSubmit[Answer Submission]
+        FeedbackDisplay[Feedback Display]
+        ResultView[Result View]
+    end
+
+    subgraph Backend
+        APIHandler[API Handler]
+        QuestionGen[Question Generator]
+        DifficultyAdjust[Difficulty Adjuster]
+        ErrorHandler[Error Handler]
+        Analytics[Analytics Processor]
+    end
+
+    subgraph Storage
+        LocalDB[(Local Storage)]
+        Cache[(Question Cache)]
+    end
+
+    subgraph AI
+        OllamaAPI[Ollama API]
+        MistralModel[Mistral Model]
+    end
+
+    User((User)) -->|Select| TopicSelect
+    User -->|Select| DiffSelect
+    TopicSelect & DiffSelect -->|Parameters| APIHandler
+    APIHandler -->|Request| QuestionGen
+    QuestionGen -->|Prompt| OllamaAPI
+    OllamaAPI -->|Process| MistralModel
+    MistralModel -->|Response| QuestionGen
+    QuestionGen -->|Format| QuestionDisplay
+    QuestionDisplay -->|Show| User
+    User -->|Answer| AnswerSubmit
+    AnswerSubmit -->|Process| DifficultyAdjust
+    DifficultyAdjust -->|Update| Analytics
+    Analytics -->|Store| LocalDB
+    ErrorHandler -->|Fallback| Cache
+    FeedbackDisplay -->|Show| User
+    ResultView -->|Display| User 

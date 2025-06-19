@@ -1,0 +1,40 @@
+classDiagram
+  class HomeScreen {
+    +topics: List<String>
+    +difficulties: List<String>
+    +selectedTopic: String
+    +selectedDifficulty: String
+    +build()
+  }
+  class QuizScreen {
+    -_apiService: ApiService
+    -_currentQuestion: Question
+    -_answeredQuestions: List<Question>
+    +_loadQuestion()
+    +_handleAnswer()
+    +build()
+  }
+  class ResultScreen {
+    +questions: List<Question>
+    +correctAnswers: int
+    +totalQuestions: int
+    +build()
+  }
+  class ApiService {
+    +generateQuestion(topic, difficulty): Future<Question>
+  }
+  class Question {
+    +question: String
+    +options: List<String>
+    +correctAnswer: String
+    +explanation: String
+    +difficulty: String
+    +topic: String
+    +selectedAnswer: String
+    +isCorrect: bool
+  }
+  HomeScreen --> QuizScreen : navigates
+  QuizScreen --> ResultScreen : navigates
+  QuizScreen --> ApiService : uses
+  ApiService --> Question : returns
+  ResultScreen --> Question : reviews 
