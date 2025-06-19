@@ -136,7 +136,6 @@ This document details the system's requirements, design, interfaces, testing str
 - **Class Diagram (UML):** `design/class_diagram.mmd`
 - **Data Flow Diagram (DFD):** `design/dfd.mmd`
 - **System Architecture Diagram:** `design/architecture.mmd`
-- *(Add sequence diagrams if required by your instructor)*
 
 ---
 
