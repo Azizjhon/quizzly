@@ -10,10 +10,10 @@ class ApiService {
     required String difficulty,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$_baseUrl/generate_question'),
+      final response = await http.get(
+        Uri.parse(
+            '$_baseUrl/api/questions?topic=$topic&difficulty=$difficulty'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'topic': topic, 'difficulty': difficulty}),
       );
 
       if (response.statusCode == 200) {

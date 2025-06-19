@@ -1,0 +1,13 @@
+flowchart TD
+  A[User] -->|Select Topic/Difficulty| B(HomeScreen)
+  B -->|Start Quiz| C(QuizScreen)
+  C -->|API Request| D[Flask Backend]
+  D -->|Generate Question| E[Ollama/Mistral]
+  E -->|Question JSON| D
+  D -->|Question JSON| C
+  C -->|Submit Answer| D
+  D -->|Check Answer| D
+  D -->|Feedback JSON| C
+  C -->|Complete Quiz| F(ResultScreen)
+  F -->|Review| C
+  C -->|Usage Analytics| G[Local Analytics Store] 

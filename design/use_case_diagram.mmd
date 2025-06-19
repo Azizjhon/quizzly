@@ -1,0 +1,19 @@
+flowchart TD
+  User((User))
+  SelectTopic([Select Topic])
+  SelectDifficulty([Select Difficulty])
+  StartQuiz([Start Quiz])
+  AnswerQuestion([Answer Question])
+  ViewResults([View Results])
+  GenerateQuestion([Generate Question])
+  GetFeedback([Get Feedback])
+  ReviewQuestions([Review Questions])
+
+  User --> SelectTopic
+  User --> SelectDifficulty
+  User --> StartQuiz
+  User --> AnswerQuestion
+  User --> ViewResults
+  StartQuiz --> GenerateQuestion
+  AnswerQuestion --> GetFeedback
+  ViewResults --> ReviewQuestions 

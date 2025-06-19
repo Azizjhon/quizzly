@@ -79,6 +79,20 @@ def generate_question_with_mistral(topic: str, difficulty: str) -> dict:
             "topic": topic
         }
 
+@app.route('/api/questions', methods=['GET'])
+def get_question():
+    try:
+        topic = request.args.get('topic', 'General Knowledge')
+        difficulty = request.args.get('difficulty', 'Easy')
+
+        question = generate_question_with_mistral(topic, difficulty)
+        return jsonify(question)
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
+
 @app.route('/generate_question', methods=['POST'])
 def generate_question():
     try:
