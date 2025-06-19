@@ -1,99 +1,176 @@
 # Software Requirements Specification (SRS)
+**Project:** Quizlly – AI Adaptive Quiz Platform
+
+---
 
 ## 1. Introduction
 
 ### 1.1 Purpose
-The purpose of this document is to specify the requirements for the AI Adaptive Quiz application, which provides users with dynamically generated quiz questions tailored to their selected topic and difficulty. The system aims to deliver an engaging, adaptive learning experience.
+This Software Requirements Specification (SRS) describes the requirements for Quizlly, an AI-powered adaptive quiz platform. The document is intended for developers, testers, project managers, and stakeholders to ensure a clear understanding of the system's objectives, features, and constraints.
 
 ### 1.2 Scope
-The AI Adaptive Quiz consists of:
-- A **Flutter-based frontend** for user interaction, quiz-taking, and result review.
-- A **Flask-based backend** that uses the Ollama API and the Mistral model to generate quiz questions and explanations in real time.
+Quizlly is a local, single-user educational tool that generates adaptive quizzes using AI. Users select a topic and difficulty, answer questions, receive instant feedback, and review results. The system consists of a Flutter frontend and a Flask backend, leveraging the Ollama/Mistral AI model for question generation.
 
-### 1.3 Technology Stack
-- **Frontend:** Flutter, Dart, Google Fonts, HTTP package
-- **Backend:** Python 3.8+, Flask, Flask-CORS, Ollama (Mistral model), JSON
-- **Other:** Ollama server (local), RESTful API
+### 1.3 Definitions, Acronyms, and Abbreviations
+- **AI:** Artificial Intelligence
+- **SRS:** Software Requirements Specification
+- **DFD:** Data Flow Diagram
+- **UML:** Unified Modeling Language
+- **API:** Application Programming Interface
+- **Ollama/Mistral:** AI model and server for question generation
 
----
+### 1.4 References
+- [Quizlly GitHub Repository](https://github.com/Azizjhon/quizzly)
+- [Flutter Documentation](https://flutter.dev/docs)
+- [Flask Documentation](https://flask.palletsprojects.com/)
+- [Ollama](https://ollama.com)
 
-## 2. Functional Requirements
-
-| Feature | Description | Priority |
-|---------|-------------|----------|
-| Topic Selection | User can select a quiz topic from a predefined list | High |
-| Difficulty Selection | User can select quiz difficulty (Easy/Medium/Hard) | High |
-| Start Quiz | User can start a quiz based on selected topic and difficulty | High |
-| Adaptive Question Generation | System generates questions using AI, adapting difficulty based on user performance | High |
-| Answer Submission | User can select and submit answers to questions | High |
-| Immediate Feedback | User receives instant feedback (correct/incorrect, explanation) after each answer | High |
-| Score Tracking | System tracks number of correct answers and total questions | High |
-| Result Summary | User receives a summary of their performance at the end of the quiz | High |
-| Question Review | User can review each question, their answer, the correct answer, and explanation | Medium |
-| Error Handling | User is notified of errors (e.g., network, backend issues) | High |
-| Responsive UI | Application is visually responsive and user-friendly | Medium |
-| API Security | Only valid requests are processed by the backend | Medium |
-| Usage Analytics | System collects basic usage analytics (e.g., number of quizzes taken, average score) | Medium |
+### 1.5 Overview
+This document details the system's requirements, design, interfaces, testing strategy, and references all supporting diagrams and documentation.
 
 ---
 
-## 3. Non-Functional Requirements
+## 2. Overall Description
 
-### 3.1 Performance
-- The system should generate and deliver each question within 5 seconds under normal conditions.
-- The UI should remain responsive during API calls (loading indicators).
+### 2.1 Product Perspective
+- Standalone educational tool for local use
+- Modular architecture: Flutter frontend, Flask backend, AI model
+- No user authentication; single-session, anonymous use
 
-### 3.2 Security
-- The backend should validate all incoming requests.
-- CORS is enabled to allow frontend-backend communication.
-- No sensitive user data is stored or transmitted.
+### 2.2 Product Functions
+- Topic and difficulty selection
+- Adaptive quiz generation (AI-powered)
+- Answer submission and instant feedback
+- Result summary and review
+- Local analytics (usage tracking)
 
-### 3.3 Scalability
-- The backend should support multiple concurrent users (limited by Ollama/model performance).
-- The system is intended for local use only and is not required to scale to cloud/production environments.
+### 2.3 User Classes and Characteristics
+- **Learner:** Any individual seeking to practice and improve knowledge in various topics
+- **Educator (optional):** May use the tool to demonstrate adaptive learning
 
-### 3.4 Analytics
-- The system should log basic usage analytics, such as the number of quizzes started/completed and average scores.
-- Analytics data should be stored locally and not transmitted externally.
+### 2.4 Operating Environment
+- Windows, macOS, or Linux (local machine)
+- Python 3.8+, Node.js (for diagram export), Flutter SDK
+- Ollama server and Mistral model running locally
 
----
+### 2.5 Design and Implementation Constraints
+- Local-only deployment (no cloud hosting)
+- Fixed topics and 10-question quizzes
+- No persistent user accounts or history
+- Analytics stored locally
 
-## 4. Use Cases
+### 2.6 User Documentation
+- `README.md` (setup, usage, troubleshooting)
+- `SRS.md` (requirements)
+- Diagrams in `design/` folder
 
-### 4.1 Start a Quiz
-
-- **Actor:** User
-- **Preconditions:** User is on the Home screen; Ollama backend is running.
-- **Steps:**
-  1. User selects a topic and difficulty.
-  2. User clicks "Start Quiz".
-  3. System navigates to the Quiz screen and fetches the first question.
-
-### 4.2 Answer a Question
-
-- **Actor:** User
-- **Preconditions:** User is on the Quiz screen with a question loaded.
-- **Steps:**
-  1. User selects an answer option.
-  2. System checks the answer, updates score/streak, and displays feedback and explanation.
-  3. After a short delay, the next question is loaded (or results are shown if quiz is complete).
-
-### 4.3 View Quiz Results
-
-- **Actor:** User
-- **Preconditions:** User has completed all quiz questions.
-- **Steps:**
-  1. System displays the user's score, percentage, and a review of all questions.
-  2. User can see which questions were answered correctly/incorrectly, the correct answers, and explanations.
+### 2.7 Assumptions and Dependencies
+- Ollama and Mistral model are installed and running
+- User has required Python and Flutter environments
+- No accessibility requirements
 
 ---
 
-## 5. Assumptions and Constraints
+## 3. Specific Requirements
 
-- No user authentication or persistent user history is required; the app is strictly anonymous and single-session.
-- Each quiz consists of a fixed number of questions (10).
-- Quiz topics are fixed and cannot be modified or added by users.
-- The system is intended for local use only and is not required to be deployable to cloud/production environments.
-- No specific accessibility requirements are mandated.
-- The backend relies on the quality and consistency of the Mistral model's output.
-- Usage analytics are required and should be stored locally. 
+### 3.1 Functional Requirements
+
+#### 3.1.1 User Interface
+- **FR1:** The system shall allow the user to select a topic from a predefined list.
+- **FR2:** The system shall allow the user to select a difficulty level (Easy/Medium/Hard).
+- **FR3:** The system shall allow the user to start a quiz.
+- **FR4:** The system shall display one question at a time with four answer options.
+- **FR5:** The system shall allow the user to select and submit an answer.
+- **FR6:** The system shall provide instant feedback (correct/incorrect, explanation) after each answer.
+- **FR7:** The system shall display a summary of results at the end of the quiz.
+- **FR8:** The system shall allow the user to review all questions, their answers, correct answers, and explanations.
+
+#### 3.1.2 Backend/API
+- **FR9:** The backend shall generate questions using the Ollama/Mistral AI model based on the selected topic and difficulty.
+- **FR10:** The backend shall adapt question difficulty based on user performance (streaks).
+- **FR11:** The backend shall log basic usage analytics locally (e.g., number of quizzes taken, average score).
+- **FR12:** The backend shall handle errors gracefully and provide fallback questions if AI generation fails.
+
+#### 3.1.3 Data Management
+- **FR13:** The system shall store analytics data locally.
+- **FR14:** The system shall not store any personal or sensitive user data.
+
+### 3.2 Non-Functional Requirements
+
+- **Performance:** Each question should be generated and delivered within 5 seconds.
+- **Security:** No sensitive data stored or transmitted; CORS enabled for frontend-backend communication.
+- **Scalability:** Supports multiple local users (one at a time); not intended for cloud or multi-user deployment.
+- **Reliability:** Graceful error handling and fallback questions.
+- **Usability:** Simple, intuitive UI; clear feedback and navigation.
+- **Maintainability:** Modular code, clear documentation, easy to extend.
+
+### 3.3 External Interface Requirements
+
+#### 3.3.1 User Interface
+- Home screen: topic/difficulty selection, start quiz button
+- Quiz screen: question display, answer options, feedback
+- Result screen: score, review, explanations
+
+#### 3.3.2 API Interface
+- `/generate_question` (POST): Generates a question based on topic and difficulty
+- `/api/questions` (GET): Fetches a question (alternative endpoint)
+
+#### 3.3.3 Hardware Interface
+- Standard PC or laptop
+
+#### 3.3.4 Software Interface
+- Requires Python, Flask, Flutter, Ollama, Mistral model
+
+### 3.4 System Features
+- Adaptive question difficulty
+- Instant feedback and explanations
+- Result summary and review
+- Local analytics
+- Error handling and fallback
+
+---
+
+## 4. Modeling & Design
+
+- **Use Case Diagram:** `design/use_case_diagram.mmd`
+- **Class Diagram (UML):** `design/class_diagram.mmd`
+- **Data Flow Diagram (DFD):** `design/dfd.mmd`
+- **System Architecture Diagram:** `design/architecture.mmd`
+- *(Add sequence diagrams if required by your instructor)*
+
+---
+
+## 5. Testing Strategy
+
+- **Unit Testing:**
+  - Backend: Test API endpoints, error handling, fallback logic
+  - Frontend: Test UI widgets, navigation, API integration
+- **Integration Testing:**
+  - End-to-end flow: start quiz, answer questions, view results
+- **Manual Testing:**
+  - Run through all user flows and error scenarios
+- **Evidence:**
+  - Test scripts, screenshots, or logs (to be included in `test/` or README)
+
+---
+
+## 6. Maintenance & Future Enhancements
+
+- **Codebase:** Modular, well-commented, easy to extend (add topics, question types)
+- **Dependencies:** Documented in README; update instructions provided
+- **Analytics:** Local storage, with option to reset/export
+- **Error Handling:** Logs errors, user-friendly messages
+- **Future Enhancements:**
+  - Add user authentication (optional)
+  - Support for custom topics
+  - Cloud deployment
+  - Enhanced analytics and reporting
+  - Accessibility improvements
+
+---
+
+## 7. Appendices
+
+- **A. Glossary:** See Section 1.3
+- **B. References:** See Section 1.4
+- **C. Diagrams:** See Section 4 
